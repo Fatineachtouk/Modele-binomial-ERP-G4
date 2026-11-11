@@ -4,7 +4,10 @@ import yfinance as yf
 
 def _close(ticker, period):
     px = yf.download(ticker, period=period, auto_adjust=True, progress=False)["Close"]
-    return px.squeeze()
+    px = px.squeeze().dropna()
+    if px.empty:
+        raise ValueError(f"Aucune donnée yfinance pour {ticker}")
+    return px
 
 
 def historical_vol(ticker, period="1y"):

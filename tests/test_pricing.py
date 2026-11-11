@@ -38,6 +38,17 @@ def test_non_arbitrage_violation_raises():
         pricing.crr_params(0.5, 0.01, 1, 1)
 
 
+@pytest.mark.parametrize("N, T_, sigma_", [(0, 1, 0.2), (2.5, 1, 0.2), (10, 0, 0.2), (10, 1, 0)])
+def test_invalid_parameters_raise(N, T_, sigma_):
+    with pytest.raises(ValueError):
+        pricing.crr_params(r, sigma_, T_, N)
+
+
+def test_invalid_kind_raises(crr):
+    with pytest.raises(ValueError):
+        crr(S0, K, T, r, sigma, 10, "Call")
+
+
 @pytest.mark.parametrize("N", [1, 10, 100, 500])
 def test_parameters_consistent(N):
     dt, u, d, p = pricing.crr_params(r, sigma, T, N)

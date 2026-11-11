@@ -4,6 +4,10 @@ from scipy.stats import norm
 
 def crr_params(r, sigma, T, N):
     """Paramètres de l'arbre Cox-Ross-Rubinstein."""
+    if not isinstance(N, (int, np.integer)) or N < 1:
+        raise ValueError("N doit être un entier >= 1")
+    if T <= 0 or sigma <= 0:
+        raise ValueError("T et sigma doivent être strictement positifs")
     dt = T / N
     u = np.exp(sigma * np.sqrt(dt))
     d = 1 / u
@@ -16,6 +20,8 @@ def crr_params(r, sigma, T, N):
 
 def crr_list(S0, K, T, r, sigma, N, kind="put", american=False):
     """Arbre CRR avec des listes (version pédagogique)."""
+    if kind not in ("call", "put"):
+        raise ValueError("kind doit valoir 'call' ou 'put'")
     dt, u, d, p = crr_params(r, sigma, T, N)
     disc = np.exp(-r * dt)
     if kind == "call":
