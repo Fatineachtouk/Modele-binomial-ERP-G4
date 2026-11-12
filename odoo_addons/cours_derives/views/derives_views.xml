@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- FORWARDS -->
+    <record id="view_forward_form" model="ir.ui.view">
+        <field name="name">cours.forward.form</field>
+        <field name="model">cours.forward</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group string="Contrat Forward">
+                        <field name="name"/>
+                        <field name="S0"/>
+                        <field name="r"/>
+                        <field name="T"/>
+                        <field name="F0"/>
+                    </group>
+                    <group string="Exercice A : En cours de vie">
+                        <field name="t_elapsed"/>
+                        <field name="S_t"/>
+                        <field name="value"/>
+                    </group>
+                    <group string="Exercice B : Arbitrage">
+                        <field name="market_price"/>
+                        <field name="arbitrage_gain"/>
+                        <field name="strategy"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_forward_tree" model="ir.ui.view">
+        <field name="name">cours.forward.tree</field>
+        <field name="model">cours.forward</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="value &gt; 0" decoration-danger="value &lt;= 0">
+                <field name="name"/>
+                <field name="S0"/>
+                <field name="r"/>
+                <field name="T"/>
+                <field name="F0"/>
+                <field name="t_elapsed"/>
+                <field name="S_t"/>
+                <field name="value"/>
+                <field name="market_price"/>
+                <field name="arbitrage_gain"/>
+                <field name="strategy"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_forward_search" model="ir.ui.view">
+        <field name="name">cours.forward.search</field>
+        <field name="model">cours.forward</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="arbitrages" string="Arbitrages" domain="[('arbitrage_gain', '!=', 0.0)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_forward" model="ir.actions.act_window">
+        <field name="name">Forwards</field>
+        <field name="res_model">cours.forward</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- OPTIONS -->
+    <record id="view_option_form" model="ir.ui.view">
+        <field name="name">cours.option.form</field>
+        <field name="model">cours.option</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_estimate_volatility" string="Estimer sigma" type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="option_type"/>
+                        <field name="K"/>
+                        <field name="S_T"/>
+                        <field name="premium"/>
+                        <field name="payoff"/>
+                        <field name="profit"/>
+                    </group>
+                    <group string="Bonus Volatilite">
+                        <field name="prices"/>
+                        <field name="historical_volatility"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_option_tree" model="ir.ui.view">
+        <field name="name">cours.option.tree</field>
+        <field name="model">cours.option</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="option_type"/>
+                <field name="K"/>
+                <field name="S_T"/>
+                <field name="premium"/>
+                <field name="payoff"/>
+                <field name="profit"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_option_graph" model="ir.ui.view">
+        <field name="name">cours.option.graph</field>
+        <field name="model">cours.option</field>
+        <field name="arch" type="xml">
+            <graph string="Payoff par type" type="bar">
+                <field name="option_type"/>
+                <field name="payoff" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_option_pivot" model="ir.ui.view">
+        <field name="name">cours.option.pivot</field>
+        <field name="model">cours.option</field>
+        <field name="arch" type="xml">
+            <pivot string="Tableau de bord Options">
+                <field name="option_type" type="row"/>
+                <field name="payoff" type="measure"/>
+                <field name="profit" type="measure"/>
+                <field name="premium" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_option" model="ir.actions.act_window">
+        <field name="name">Options</field>
+        <field name="res_model">cours.option</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
+    </record>
+
+    <record id="action_dashboard" model="ir.actions.act_window">
+        <field name="name">Tableau de bord</field>
+        <field name="res_model">cours.option</field>
+        <field name="view_mode">pivot,graph,tree,form</field>
+    </record>
+
+    <!-- PORTFOLIO -->
+    <record id="view_portfolio_form" model="ir.ui.view">
+        <field name="name">cours.portfolio.form</field>
+        <field name="model">cours.portfolio</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group string="Parametres">
+                        <field name="name"/>
+                        <field name="mu_A"/>
+                        <field name="sigma_A"/>
+                        <field name="mu_B"/>
+                        <field name="sigma_B"/>
+                        <field name="rho"/>
+                        <field name="w_A"/>
+                    </group>
+                    <group string="Resultats">
+                        <field name="w_B"/>
+                        <field name="exp_return"/>
+                        <field name="sigma_p"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_portfolio_tree" model="ir.ui.view">
+        <field name="name">cours.portfolio.tree</field>
+        <field name="model">cours.portfolio</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="rho"/>
+                <field name="w_A"/>
+                <field name="exp_return"/>
+                <field name="sigma_p"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_portfolio" model="ir.actions.act_window">
+        <field name="name">Portefeuilles</field>
+        <field name="res_model">cours.portfolio</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- MENUS -->
+    <menuitem id="menu_derives_root" name="Derives" sequence="10"/>
+    <menuitem id="menu_forward" name="Forwards" parent="menu_derives_root" sequence="10" action="action_forward"/>
+    <menuitem id="menu_option" name="Options" parent="menu_derives_root" sequence="20" action="action_option"/>
+    <menuitem id="menu_dashboard" name="Tableau de bord" parent="menu_derives_root" sequence="30" action="action_dashboard"/>
+    <menuitem id="menu_portfolio" name="Portefeuille (2 actifs)" parent="menu_derives_root" sequence="40" action="action_portfolio"/>
+</odoo>

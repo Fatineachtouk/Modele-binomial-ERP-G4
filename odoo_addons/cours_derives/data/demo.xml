@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="demo_fwd_1" model="cours.forward">
+        <field name="name">FWD-001</field>
+        <field name="S0">80.0</field>
+        <field name="r">0.04</field>
+        <field name="T">0.5</field>
+    </record>
+
+    <record id="demo_fwd_2" model="cours.forward">
+        <field name="name">FWD-002</field>
+        <field name="S0">100.0</field>
+        <field name="r">0.05</field>
+        <field name="T">1.0</field>
+    </record>
+
+    <record id="demo_opt_1" model="cours.option">
+        <field name="name">OPT-001</field>
+        <field name="option_type">call</field>
+        <field name="K">50.0</field>
+        <field name="S_T">45.0</field>
+        <field name="premium">2.00</field>
+    </record>
+
+    <record id="demo_opt_2" model="cours.option">
+        <field name="name">OPT-002</field>
+        <field name="option_type">put</field>
+        <field name="K">50.0</field>
+        <field name="S_T">45.0</field>
+        <field name="premium">3.00</field>
+    </record>
+
+    <record id="demo_opt_3" model="cours.option">
+        <field name="name">OPT-003</field>
+        <field name="option_type">call</field>
+        <field name="K">100.0</field>
+        <field name="S_T">130.0</field>
+        <field name="premium">10.00</field>
+    </record>
+
+    <record id="demo_opt_4" model="cours.option">
+        <field name="name">OPT-004</field>
+        <field name="option_type">put</field>
+        <field name="K">100.0</field>
+        <field name="S_T">130.0</field>
+        <field name="premium">5.12</field>
+    </record>
+</odoo>
