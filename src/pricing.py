@@ -42,3 +42,32 @@ def crr_list(S0, K, T, r, sigma, N, kind="put", american=False):
                 cont = max(cont, payoff(S_ij))
             V[j] = cont
     return V[0]
+
+def crr_numpy(S0, K, T, r, sigma, N, kind="put", american=False):
+    """Arbre CRR vectorise NumPy (S2) : O(N^2) en temps, O(N) en memoire."""
+    if kind not in ("call", "put"):
+        raise ValueError("kind doit etre 'call' ou 'put'")        
+    import numpy as np
+    dt = T / N
+    u = np.exp(sigma * np.sqrt(dt))
+    d = 1 / u
+    growth = np.exp(r * dt)
+    if not (d < growth < u):
+        raise ValueError("Condition de non-arbitrage violee : d < e^(r dt) < u")
+    p = (growth - d) / (u - d)
+    disc = np.exp(-r * dt)
+    sign = 1 if kind == "call" else -1
+
+    # Noeuds terminaux
+    j = np.arange(N + 1)
+    ST = S0 * u**j * d**(N - j)
+    V = np.maximum(sign * (ST - K), 0)
+
+    # Induction retrograde
+    for i in range(N - 1, -1, -1):
+        V = disc * (p * V[1:i + 2] + (1 - p) * V[0:i + 1])
+        if american:
+            jj = np.arange(i + 1)
+            S = S0 * u**jj * d**(i - jj)
+            V = np.maximum(V, np.maximum(sign * (S - K), 0))
+    return float(V[0])
