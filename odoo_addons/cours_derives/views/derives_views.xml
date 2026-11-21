@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- FORWARDS -->
+    <!-- ======================================================== -->
+    <!-- FORWARDS                                                 -->
+    <!-- ======================================================== -->
     <record id="view_forward_form" model="ir.ui.view">
         <field name="name">cours.forward.form</field>
         <field name="model">cours.forward</field>
@@ -66,26 +68,49 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <!-- OPTIONS -->
+    <!-- ======================================================== -->
+    <!-- OPTIONS (MISES À JOUR PROJET 4 - SEMAINE 2)             -->
+    <!-- ======================================================== -->
     <record id="view_option_form" model="ir.ui.view">
         <field name="name">cours.option.form</field>
         <field name="model">cours.option</field>
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_estimate_volatility" string="Estimer sigma" type="object" class="btn-primary"/>
+                    <button name="action_estimate_volatility" string="Estimer sigma" type="object" class="btn-secondary"/>
                 </header>
                 <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="option_type"/>
-                        <field name="K"/>
-                        <field name="S_T"/>
-                        <field name="premium"/>
-                        <field name="payoff"/>
-                        <field name="profit"/>
+                    <group string="Caractéristiques de l'Option">
+                        <group>
+                            <field name="name"/>
+                            <field name="option_type"/>
+                            <field name="style_option"/>
+                            <field name="S0"/>
+                            <field name="K"/>
+                        </group>
+                        <group>
+                            <field name="T"/>
+                            <field name="r"/>
+                            <field name="sigma"/>
+                            <field name="nb_pas"/>
+                        </group>
                     </group>
-                    <group string="Bonus Volatilite">
+                    
+                    <group string="Résultats de Pricing (Modèle Binomial CRR &amp; Black-Scholes)">
+                        <group>
+                            <field name="prix_binomial" readonly="1" decoration-bf="1"/>
+                            <field name="prix_bs" readonly="1"/>
+                            <field name="ecart" readonly="1" decoration-info="1"/>
+                        </group>
+                        <group>
+                            <field name="premium"/>
+                            <field name="S_T"/>
+                            <field name="payoff"/>
+                            <field name="profit"/>
+                        </group>
+                    </group>
+
+                    <group string="Bonus Volatilité Historique">
                         <field name="prices"/>
                         <field name="historical_volatility"/>
                     </group>
@@ -101,11 +126,13 @@
             <tree>
                 <field name="name"/>
                 <field name="option_type"/>
+                <field name="style_option"/>
+                <field name="S0"/>
                 <field name="K"/>
-                <field name="S_T"/>
-                <field name="premium"/>
-                <field name="payoff"/>
-                <field name="profit"/>
+                <field name="nb_pas"/>
+                <field name="prix_binomial"/>
+                <field name="prix_bs"/>
+                <field name="ecart"/>
             </tree>
         </field>
     </record>
@@ -146,7 +173,9 @@
         <field name="view_mode">pivot,graph,tree,form</field>
     </record>
 
-    <!-- PORTFOLIO -->
+    <!-- ======================================================== -->
+    <!-- PORTFOLIO                                                -->
+    <!-- ======================================================== -->
     <record id="view_portfolio_form" model="ir.ui.view">
         <field name="name">cours.portfolio.form</field>
         <field name="model">cours.portfolio</field>
@@ -192,7 +221,9 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <!-- MENUS -->
+    <!-- ======================================================== -->
+    <!-- MENUS                                                    -->
+    <!-- ======================================================== -->
     <menuitem id="menu_derives_root" name="Derives" sequence="10"/>
     <menuitem id="menu_forward" name="Forwards" parent="menu_derives_root" sequence="10" action="action_forward"/>
     <menuitem id="menu_option" name="Options" parent="menu_derives_root" sequence="20" action="action_option"/>
